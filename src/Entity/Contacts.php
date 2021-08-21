@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ContactsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ContactsRepository::class)
@@ -19,11 +20,15 @@ class Contacts
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="Name is mandatory")
+     * @Assert\Length(min=4,max=30)
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\Length(min=4,max=30)
+     * @Assert\NotBlank(message="Name is mandatory")
      */
     private $lastname;
 
