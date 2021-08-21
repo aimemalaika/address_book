@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Contacts{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2 class="text-center text-primary">All Contact</h2>
+        <br />
+        <div class="row">
+            {% for contact in contacts %}
+            <div class="col-sm-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">{{contact.firstname}} {{contact.lastname}}</h3>
+                        <a href="{{ path('contacts_single',{'id':contact.id}) }}" class="btn p-0 btn-link">Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}    
+        </div>
+    </div>
+{% endblock %}
