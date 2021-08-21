@@ -41,4 +41,5 @@ class ContactsController extends AbstractController
             'contact' => $data
         ]);
     }
+    
 }
