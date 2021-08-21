@@ -4,7 +4,8 @@
 
 {% block body %}
     <div class="container">
-        <h2 class="text-center text-primary">Aime Malaika</h2>
+        <h2 class="text-center text-primary">{{contact.firstname}} {{contact.lastname}}</h2>
+        <p class="text-center text-muted">created on {{contact.createdAt | date('F d Y')}} at {{contact.createdAt | date('h:i')}}</p>
         <br />
         <div class="col-12 mb-4">
             <div class="card">
