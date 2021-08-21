@@ -12,7 +12,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="card-title">{{contact.firstname}} {{contact.lastname}}</h3>
-                        <a href="{{ path('contacts_single',{'id':contact.id}) }}" class="btn p-0 btn-link">Details</a>
+                        <a href="{{ path('contacts_single',{'id':contact.id}) }}" class="btn p-0 btn-link text-primary">Details</a>
+                        <a href="{{ path('contacts_edit',{'id':contact.id}) }}" class="btn p-0 btn-link text-info">Edit</a>
                     </div>
                 </div>
             </div>

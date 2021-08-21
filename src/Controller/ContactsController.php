@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Contacts;
+use App\Form\ContactsType;
 use App\Repository\ContactsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,22 +35,16 @@ class ContactsController extends AbstractController
     /**
      * @Route("/contacts/new", name="contacts_new")
      */
-    public function createContact(Request $request): Response
+    public function createContact(Contacts $contact, Request $request): Response
     {
-
-        $contact = new Contacts();
-
-        $form = $this->createFormBuilder($contact)
-                        ->add('firstname')
-                        ->add('lastname')
-                        ->getForm();
+        $form = $this->createForm(ContactsType::class,$contact);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){    
-            $this->manager->persist($contact);
+            $this->manager->persist($this->contact);
             $this->manager->flush();
-            return $this->redirectToRoute('contacts_single',['id'=>$contact->getId()]);
+            return $this->redirectToRoute('contacts_single',['id'=>$this->contact->getId()]);
         }
 
         return $this->render('contacts/new-contact.html.twig', [
@@ -61,40 +56,31 @@ class ContactsController extends AbstractController
     /**
      * @Route("/contacts/edit/{id}", name="contacts_edit", requirements={"id"="\d+"})
      */
-    public function updateContact(Request $request): Response
+    public function updateContact(Contacts $contact, Request $request): Response
     {
-
-        $contact = new Contacts();
-
-        $form = $this->createFormBuilder($contact)
-                        ->add('firstname')
-                        ->add('lastname')
-                        ->getForm();
-
+        $form = $this->createForm(ContactsType::class,$contact);
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()){    
+            $contact->setCreatedAt($contact->getCreatedAt());
             $this->manager->persist($contact);
             $this->manager->flush();
             return $this->redirectToRoute('contacts_single',['id'=>$contact->getId()]);
         }
-
         return $this->render('contacts/edit-contact.html.twig', [
             'controller_name' => 'ContactsController',
-            'contactform' => $form->createView()
+            'contactform' => $form->createView(),
+            'contact' => $contact
         ]);
     }
 
     /**
      * @Route("/contacts/{id}", name="contacts_single", requirements={"id"="\d+"})
      */
-    public function getOneContact($id): Response
+    public function getOneContact(Contacts $contact): Response
     {
-        $data = $this->repository->find($id);
-
         return $this->render('contacts/single-contact.html.twig', [
             'controller_name' => 'ContactsController',
-            'contact' => $data
+            'contact' => $contact
         ]);
     }
 
