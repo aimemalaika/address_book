@@ -42,9 +42,10 @@ class ContactsController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){    
-            $this->manager->persist($this->contact);
+            $this->manager->persist($contact);
             $this->manager->flush();
-            return $this->redirectToRoute('contacts_single',['id'=>$this->contact->getId()]);
+            $this->addFlash('success','Contact updated successfully');
+            return $this->redirectToRoute('contacts_single',['id'=>$contact->getId()]);
         }
 
         return $this->render('contacts/new-contact.html.twig', [
@@ -64,6 +65,7 @@ class ContactsController extends AbstractController
             $contact->setCreatedAt($contact->getCreatedAt());
             $this->manager->persist($contact);
             $this->manager->flush();
+            $this->addFlash('success','Contact updated successfully');
             return $this->redirectToRoute('contacts_single',['id'=>$contact->getId()]);
         }
         dump($contact->getEmails());
@@ -83,6 +85,21 @@ class ContactsController extends AbstractController
             'controller_name' => 'ContactsController',
             'contact' => $contact
         ]);
+    }
+
+    /**
+     * @Route("/contacts/delete/{id}", name="contacts_delete", requirements={"id"="\d+"})
+     */
+    public function deleteContact(Contacts $contact, Request $request)
+    {
+        if($this->isCsrfTokenValid($contact->getId(),$request->request->get('_token'))){
+            $this->manager->remove($contact);
+            $this->manager->flush();
+            $this->addFlash('success','Contact deleted successfully');
+            return $this->redirectToRoute('contacts_list');
+        }else{
+            return $this->redirectToRoute('contacts_single',['id'=>$contact->getId()]);
+        }            
     }
 
 }

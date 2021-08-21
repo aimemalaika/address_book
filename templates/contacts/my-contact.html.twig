@@ -9,11 +9,18 @@
         <div class="row">
             {% for contact in contacts %}
             <div class="col-sm-3 mb-4">
-                <div class="card">
+                <div class="card border-dark">
                     <div class="card-body">
                         <h3 class="card-title">{{contact.firstname}} {{contact.lastname}}</h3>
-                        <a href="{{ path('contacts_single',{'id':contact.id}) }}" class="btn p-0 btn-link text-primary">Details</a>
-                        <a href="{{ path('contacts_edit',{'id':contact.id}) }}" class="btn p-0 btn-link text-info">Edit</a>
+                        <div class="mt-4 d-flex justify-content-between">
+                            <a href="{{ path('contacts_single',{'id':contact.id}) }}" class="btn p-0 btn-link text-primary">Details</a>
+                            <a href="{{ path('contacts_edit',{'id':contact.id}) }}" class="btn p-0 btn-link text-info">Edit</a>
+                            <form onsubmit="return confirm('Are you sure about deleting {{contact.firstname}}  {{contact.lastname}}\' contact ?')" method="post" action="{{ path('contacts_delete',{id:contact.id}) }}">
+                                <input type="hidden" name="_method" value="DELETE" />
+                                <input type="hidden" name="_token" value="{{ csrf_token(contact.id)}}"/>
+                                <button type="submit" class="btn p-0 btn-link text-danger">Delete</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -43,6 +43,12 @@
                 </div>
             </div>
         </header>
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success mx-auto col-md-6 alert-dismissible fade show" role="alert">
+                    <strong>Success!</strong> {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
             {% block body %}{% endblock %}
         </main>
         <script src="{{ asset('assets/js/jquery-3.5.1.slim.min.js')}}" type="text/javascript"></script>

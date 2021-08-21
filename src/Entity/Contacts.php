@@ -22,7 +22,7 @@ class Contacts
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\NotBlank(message="Name is mandatory")
+     * @Assert\NotBlank(message="First Name is mandatory")
      * @Assert\Length(min=4,max=30)
      */
     private $firstname;
@@ -30,7 +30,7 @@ class Contacts
     /**
      * @ORM\Column(type="string", length=30)
      * @Assert\Length(min=4,max=30)
-     * @Assert\NotBlank(message="Name is mandatory")
+     * @Assert\NotBlank(message="Last Name is mandatory")
      */
     private $lastname;
 
