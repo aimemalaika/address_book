@@ -66,6 +66,7 @@ class ContactsController extends AbstractController
             $this->manager->flush();
             return $this->redirectToRoute('contacts_single',['id'=>$contact->getId()]);
         }
+        dump($contact->getEmails());
         return $this->render('contacts/edit-contact.html.twig', [
             'controller_name' => 'ContactsController',
             'contactform' => $form->createView(),

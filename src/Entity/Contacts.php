@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ContactsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -37,9 +39,15 @@ class Contacts
      */
     private $createdAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="contact", orphanRemoval=true)
+     */
+    private $emails;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->emails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -79,6 +87,36 @@ class Contacts
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Emails[]
+     */
+    public function getEmails(): Collection
+    {
+        return $this->emails;
+    }
+
+    public function addEmail(Emails $email): self
+    {
+        if (!$this->emails->contains($email)) {
+            $this->emails[] = $email;
+            $email->setContact($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmail(Emails $email): self
+    {
+        if ($this->emails->removeElement($email)) {
+            // set the owning side to null (unless already changed)
+            if ($email->getContact() === $this) {
+                $email->setContact(null);
+            }
+        }
 
         return $this;
     }
