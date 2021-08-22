@@ -23,6 +23,8 @@ class ContactsController extends AbstractController
      */
     public function getAllContact(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $datas = $this->repository->findAll();
         
         return $this->render('contacts/my-contact.html.twig', [
