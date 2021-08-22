@@ -29,9 +29,10 @@
                                 </li>
                                 <li>
                                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="{{ asset('assets/images/98681.jpg') }}" alt="mdo" class="rounded-circle" width="32" height="32">
+                                        <span style="border: 1px solid black;padding: 2px 8px;font-size: 20px;" class="rounded-circle fw-bold">{{ app.user.username|first|upper }}</span>
                                     </a>
                                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                                        <li><a class="dropdown-item" href="">{{ app.user.username|upper }}</a></li>
                                         <li><a class="dropdown-item" href="{{ path('authentication_logout') }}">Sign out</a></li>
                                     </ul>
                                 </li>
