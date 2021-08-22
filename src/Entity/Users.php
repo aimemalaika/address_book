@@ -28,6 +28,7 @@ class Users implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="string", length=30)
      * @Assert\Length(min = 4,max = 30)
+     * @Assert\Regex("/^[a-z0-9_-]{3,30}$/",message="Your username should contain only letters and numbers")
      * @Assert\NotBlank
      */
     private $username;
