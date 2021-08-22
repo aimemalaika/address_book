@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AuthenticationController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if errors %}
+            <div class="alert alert-danger mx-auto col-md-5 alert-dismissible fade show" role="alert"> 
+                <strong>Error!</strong> {{ errors.messageKey }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        <form action={{ path('authentication_login') }} method="post" class="col-md-5 mx-auto">
+            <h4 class="text-primary">Sign in</h4>
+            <br/>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input required value="{{ lastusername }}" name="_username" type="text" class="form-control" id="username">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input required name="_password" type="password" class="form-control" id="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Connect</button>
+            <br>
+            <p class="mt-4">If you don't have an accout <a href="{{ path('authentication_register') }}">singup</a></p>
+        </form>
+    </div>
+    
+{% endblock %}

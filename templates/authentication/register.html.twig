@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AuthenticationController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {{ form_start(registrationform,{'attr':{'novalidate':'novalidate'}}) }}
+        <div class="col-md-5 mx-auto">
+            <h4 class="text-primary">Sign Up</h4>
+            <br />
+            <div class="mb-3">
+                {{ form_row(registrationform.username,{
+                    'attr':{
+                        'placeholder': 'Enter username'
+                    }
+                }) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(registrationform.password,{
+                    'attr':{
+                        'placeholder': 'Enter username',
+                    }
+                }) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(registrationform.confirm_password,{
+                    'attr':{
+                        'placeholder': 'Enter username',
+                    }
+                }) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <p class="mt-4">If you you already have an accout <a href="{{ path('authentication_login') }}">singin</a></p>
+        </div>
+        {{ form_end(registrationform) }}
+    </div>
+    
+{% endblock %}

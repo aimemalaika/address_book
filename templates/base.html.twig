@@ -9,40 +9,42 @@
     </head>
     <body>
         <main>
-        <header class="p-3 mb-3 border-bottom border-dark">
-            <div class="container">
-                <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
-                    <div class="col-md-2">
-                        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-                            <img height="32" src="{{ asset('assets/images/address-book.png') }}"
-                        </a>
-                    </div>
-                    <div class="col-md-10">
-                        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-end mb-md-0">
-                            <li class="me-5"><a href="{{ path('contacts_list') }}" class="nav-link text-dark px-2">All Contact</a></li>
-                            <li class="me-5"><a href="{{ path('contacts_new') }}" class="nav-link text-dark px-2">Create Contact</a></li>
-                            <li>
-                                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-                                </form>
-                            </li>
-                            <li>
-                                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="{{ asset('assets/images/98681.jpg') }}" alt="mdo" class="rounded-circle" width="32" height="32">
-                                </a>
-                                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Sign out</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+        {% if app.user %}
+            <header class="p-3 mb-3 border-bottom border-dark">
+                <div class="container">
+                    <div class="d-flex flex-wrap justify-content-center justify-content-lg-start">
+                        <div class="col-md-2">
+                            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                                <img height="32" src="{{ asset('assets/images/address-book.png') }}" />
+                            </a>
+                        </div>
+                        <div class="col-md-10">
+                            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-end mb-md-0">
+                                <li class="me-5"><a href="{{ path('contacts_list') }}" class="nav-link text-dark px-2">All Contact</a></li>
+                                <li class="me-5"><a href="{{ path('contacts_new') }}" class="nav-link text-dark px-2">Create Contact</a></li>
+                                <li>
+                                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                                        <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                                    </form>
+                                </li>
+                                <li>
+                                    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="{{ asset('assets/images/98681.jpg') }}" alt="mdo" class="rounded-circle" width="32" height="32">
+                                    </a>
+                                    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                                        <li><a class="dropdown-item" href="{{ path('authentication_logout') }}">Sign out</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </header>
+            </header>
+            {% else %}
+                <div class="col-md-6 mx-auto text-center mt-4 mb-4">
+                    <img width="15%" src="{{ asset('assets/images/address-book.png') }}" />
+                </div>
+            {% endif %}
             {% for message in app.flashes('success') %}
                 <div class="alert alert-success mx-auto col-md-6 alert-dismissible fade show" role="alert">
                     <strong>Success!</strong> {{message}}
