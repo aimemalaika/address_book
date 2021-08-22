@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Contacts;
 use App\Entity\ContactSearch;
+use App\Entity\Emails;
 use App\Form\ContactSearchType;
 use App\Form\ContactsType;
 use App\Repository\ContactsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -94,10 +96,15 @@ class ContactsController extends AbstractController
     /**
      * @Route("/contacts/{id}", name="contacts_single", requirements={"id"="\d+"})
      */
-    public function getOneContact(Contacts $contact): Response
+    public function getOneContact(Contacts $contact, Request $request): Response
     {
+        // $email = new Emails(); 
+        // $formEmail = $this->createForm(EmailType::class,$email);
+        // $formEmail->handleRequest($request);
+
         return $this->render('contacts/single-contact.html.twig', [
             'controller_name' => 'ContactsController',
+            // 'emailForm' => $formEmail->createView(),
             'contact' => $contact
         ]);
     }
