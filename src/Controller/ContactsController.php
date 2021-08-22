@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Contacts;
 use App\Entity\ContactSearch;
 use App\Entity\Emails;
+use App\Entity\Telephone;
 use App\Form\ContactSearchType;
 use App\Form\ContactsType;
 use App\Form\EmailsType;
+use App\Form\TelephoneType;
 use App\Repository\ContactsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -109,15 +111,33 @@ class ContactsController extends AbstractController
                 $this->manager->flush();
                 $this->addFlash('success','Email created successfully');
             }else{
-                $error = true;
+                $errorE = true;
+            }
+        }
+
+        $tel = new Telephone();
+        $formTel = $this->createForm(TelephoneType::class,$tel);
+        $formTel->handleRequest($request);
+        $errorE = false;
+        $errorT = false;
+        if($formTel->isSubmitted()){
+            if($formTel->isValid()){
+                $tel->setContact($contact);
+                $this->manager->persist($tel);
+                $this->manager->flush();
+                $this->addFlash('success','Telephone created successfully');
+            }else{
+                $errorT = true;
             }
         }
 
         return $this->render('contacts/single-contact.html.twig', [
             'controller_name' => 'ContactsController',
             'emailform' => $formMail->createView(),
+            'telepform' => $formTel->createView(),
             'contact' => $contact,
-            'error' => $error
+            'errorE' => $errorE,
+            'errorT' => $errorT
         ]);
     }
 
@@ -133,6 +153,34 @@ class ContactsController extends AbstractController
             return $this->redirectToRoute('contacts_list');
         }else{
             return $this->redirectToRoute('contacts_single',['id'=>$contact->getId()]);
+        }            
+    }
+    /**
+     * @Route("/contacts/delete/email/{id}", name="email_delete", requirements={"id"="\d+"})
+     */
+    public function deleteContactEmail(Emails $email, Request $request)
+    {
+        if($this->isCsrfTokenValid($email->getId(),$request->request->get('_token'))){
+            $this->manager->remove($email);
+            $this->manager->flush();
+            $this->addFlash('success','Email deleted successfully');
+            return $this->redirectToRoute('contacts_single',['id'=>$email->getContact()->getId() ]);
+        }else{
+            return $this->redirectToRoute('contacts_single',['id'=>$email->getContact()->getId() ]);
+        }            
+    }
+    /**
+     * @Route("/contacts/delete/phone/{id}", name="phone_delete", requirements={"id"="\d+"})
+     */
+    public function deleteContactPhone(Telephone $tel, Request $request)
+    {
+        if($this->isCsrfTokenValid($tel->getId(),$request->request->get('_token'))){
+            $this->manager->remove($tel);
+            $this->manager->flush();
+            $this->addFlash('success','Contact deleted successfully');
+            return $this->redirectToRoute('contacts_single',['id'=>$tel->getContact()->getId()]);
+        }else{
+            return $this->redirectToRoute('contacts_single',['id'=>$tel->getContact()->getId()]);
         }            
     }
 

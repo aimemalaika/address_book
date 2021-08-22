@@ -47,10 +47,16 @@ class Contacts
      */
     private $emails;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Telephone::class, mappedBy="contact")
+     */
+    private $telephones;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->emails = new ArrayCollection();
+        $this->telephones = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -118,6 +124,36 @@ class Contacts
             // set the owning side to null (unless already changed)
             if ($email->getContact() === $this) {
                 $email->setContact(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Telephone[]
+     */
+    public function getTelephones(): Collection
+    {
+        return $this->telephones;
+    }
+
+    public function addTelephone(Telephone $telephone): self
+    {
+        if (!$this->telephones->contains($telephone)) {
+            $this->telephones[] = $telephone;
+            $telephone->setContact($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTelephone(Telephone $telephone): self
+    {
+        if ($this->telephones->removeElement($telephone)) {
+            // set the owning side to null (unless already changed)
+            if ($telephone->getContact() === $this) {
+                $telephone->setContact(null);
             }
         }
 

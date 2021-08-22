@@ -10,9 +10,6 @@
         <div class="col-12 mb-4">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <button id="newMail" type="button" class="btn btn-link text-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Add Contact Email
-                    </button>
                     <a href="{{ path('contacts_edit',{'id':contact.id}) }}" class="btn btn-link text-info">Edit Contact Informations</a>
                     <form method="post"  onsubmit="return confirm('Are you sure about deleting {{contact.firstname}}  {{contact.lastname}}\' contact ?')" action="{{ path('contacts_delete',{id:contact.id}) }}">
                         <input type="hidden" name="_method" value="DELETE" />
@@ -26,10 +23,20 @@
                             <div class="card">
                                 <div class="card-header text-white fw-bolder bg-dark">
                                     Emails
+                                    <button style="float: right;" id="newMail" type="button" class="btn btn-link text-success p-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        Add Contact Email
+                                    </button>
                                 </div>
                                 <ul class="list-group list-group-flush">
                                     {% for email in contact.emails %}
-                                    <li class="list-group-item">{{ email.emailaddress }}</li>
+                                    <li class="list-group-item">
+                                        {{ email.emailaddress }}  
+                                        <form style="float: right;"  method="post"  onsubmit="return confirm('Are you sure about deleting')" action="{{ path('email_delete',{id:email.id}) }}">
+                                            <input type="hidden" name="_method" value="DELETE" />
+                                            <input type="hidden" name="_token" value="{{ csrf_token(email.id)}}"/>
+                                            <button type="submit" class="btn p-0 btn-link text-danger">Delete</button>
+                                        </form>
+                                    </li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -38,11 +45,21 @@
                             <div class="card">
                                 <div class="card-header text-white fw-bolder bg-dark">
                                     Telephones
+                                    <button style="float: right;" id="newMail" type="button" class="btn btn-link text-success p-0" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                                        Add Contact Phone
+                                    </button>
                                 </div>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">An item</li>
-                                    <li class="list-group-item">A second item</li>
-                                    <li class="list-group-item">A third item</li>
+                                    {% for tel in contact.telephones %}
+                                    <li class="list-group-item">
+                                        {{ tel.telephone }}
+                                        <form style="float: right;"  method="post"  onsubmit="return confirm('Are you sure about deleting')" action="{{ path('phone_delete',{id:tel.id}) }}">
+                                            <input type="hidden" name="_method" value="DELETE" />
+                                            <input type="hidden" name="_token" value="{{ csrf_token(tel.id)}}"/>
+                                            <button type="submit" class="btn p-0 btn-link text-danger">Delete</button>
+                                        </form>    
+                                    </li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -72,12 +89,39 @@
             </div>
         </div>
     </div>
-    {% if error == true %}
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New Contact Phone</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(telepform,{'attr':{'novalidate':'novalidate'}}) }}  
+                    <div class="mb-3">
+                        {{ form_row(telepform.telephone,{'label': 'Enter Telephone Number'}) }}
+                    </div>
+                    <div class="row justify-content-between">
+                        <button type="button" class="btn btn-secondary col-md-3" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-primary col-md-3">Save Email</button>
+                    </div>
+                    {{ form_end(telepform) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if errorE == true %}
         <script type="text/javascript">
             $(window).on('load', function() {
                 $('#exampleModal').modal('show');
             });
         </script>
-        {{error}}
+    {% endif %}
+    {% if errorT == true %}
+        <script type="text/javascript">
+            $(window).on('load', function() {
+                $('#exampleModal2').modal('show');
+            });
+        </script>
     {% endif %}
 {% endblock %}
