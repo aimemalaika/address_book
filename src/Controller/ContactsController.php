@@ -6,6 +6,7 @@ use App\Entity\Contacts;
 use App\Form\ContactsType;
 use App\Repository\ContactsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,11 +22,17 @@ class ContactsController extends AbstractController
     /**
      * @Route("/", name="contacts_list")
      */
-    public function getAllContact(): Response
+    public function getAllContact(PaginatorInterface $paginator, Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $datas = $this->repository->findAll();
+        // $datas = $this->repository->findAllMyContacts();
+
+        $datas = $paginator->paginate(
+            $this->repository->findAllMyContacts(),
+            $request->request->getInt('page',1),
+            16
+        );
         
         return $this->render('contacts/my-contact.html.twig', [
             'controller_name' => 'ContactsController',

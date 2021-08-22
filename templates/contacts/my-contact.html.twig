@@ -24,7 +24,10 @@
                     </div>
                 </div>
             </div>
-            {% endfor %}    
+            {% endfor %} 
+            <div class="pagination mb-5">
+                {{ knp_pagination_render(contacts, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
+            </div>
         </div>
     </div>
 {% endblock %}
