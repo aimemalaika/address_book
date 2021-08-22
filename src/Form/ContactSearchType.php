@@ -19,15 +19,7 @@ class ContactSearchType extends AbstractType
                 'attr' => [
                     'placeHolder' => 'Search first names ...',
                 ]
-            ])
-            // ->add('lastname',TextType::class,[
-            //     'label' => false,
-            //     'required' => false,
-            //     'attr' => [
-            //         'placeHolder' => 'Search last names ...'
-            //     ]
-            // ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -36,6 +28,7 @@ class ContactSearchType extends AbstractType
             'data_class' => ContactSearch::class,
             'method' => 'get',
             'csrf_protection' => false,
+            'allow_extra_fields' => true
         ]);
     }
 

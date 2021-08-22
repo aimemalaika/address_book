@@ -21,6 +21,7 @@ class ContactsController extends AbstractController
         $this->repository = $repository;
         $this->manager = $manager;
     }
+
     /**
      * @Route("/", name="contacts_list")
      */
@@ -35,10 +36,10 @@ class ContactsController extends AbstractController
 
         $datas = $paginator->paginate(
             $this->repository->findAllMyContactsByName($search),
-            $request->request->getInt('page',1),
-            16
+            $request->query->getInt('page',1),
+            8
         );
-        
+        dump($request->request->getInt('page'));
         return $this->render('contacts/my-contact.html.twig', [
             'controller_name' => 'ContactsController',
             'searchform' => $form->createView(),
@@ -83,7 +84,6 @@ class ContactsController extends AbstractController
             $this->addFlash('success','Contact updated successfully');
             return $this->redirectToRoute('contacts_single',['id'=>$contact->getId()]);
         }
-        dump($contact->getEmails());
         return $this->render('contacts/edit-contact.html.twig', [
             'controller_name' => 'ContactsController',
             'contactform' => $form->createView(),

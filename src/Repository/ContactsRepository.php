@@ -50,7 +50,6 @@ class ContactsRepository extends ServiceEntityRepository
                             ->orderBy('c.id', 'DESC')
                             ->setParameter('name'.$i, $arrayname[$i]);
             }
-            dump($arrayname);
         }
 
         return $query->getQuery();
