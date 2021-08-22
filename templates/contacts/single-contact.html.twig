@@ -10,8 +10,8 @@
         <div class="col-12 mb-4">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <button type="button" class="btn btn-link text-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Add Contact Email Or Telephone
+                    <button id="newMail" type="button" class="btn btn-link text-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Add Contact Email
                     </button>
                     <a href="{{ path('contacts_edit',{'id':contact.id}) }}" class="btn btn-link text-info">Edit Contact Informations</a>
                     <form method="post"  onsubmit="return confirm('Are you sure about deleting {{contact.firstname}}  {{contact.lastname}}\' contact ?')" action="{{ path('contacts_delete',{id:contact.id}) }}">
@@ -28,9 +28,9 @@
                                     Emails
                                 </div>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">An item</li>
-                                    <li class="list-group-item">A second item</li>
-                                    <li class="list-group-item">A third item</li>
+                                    {% for email in contact.emails %}
+                                    <li class="list-group-item">{{ email.emailaddress }}</li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -54,21 +54,30 @@
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">New Contact Email</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New Contact Email</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(emailform,{'attr':{'novalidate':'novalidate'}}) }}  
+                    <div class="mb-3">
+                        {{ form_row(emailform.emailaddress,{'label': 'Enter Email Address'}) }}
+                    </div>
+                    <div class="row justify-content-between">
+                        <button type="button" class="btn btn-secondary col-md-3" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-primary col-md-3">Save Email</button>
+                    </div>
+                    {{ form_end(emailform) }}
+                </div>
             </div>
         </div>
     </div>
-{% endblock %}
-{% block javascripts %}
-    <script src="{{ asset('assets/js/newcontact.js')}}" type="text/javascript"></script>
+    {% if error == true %}
+        <script type="text/javascript">
+            $(window).on('load', function() {
+                $('#exampleModal').modal('show');
+            });
+        </script>
+        {{error}}
+    {% endif %}
 {% endblock %}

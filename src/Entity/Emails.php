@@ -5,9 +5,11 @@ namespace App\Entity;
 use App\Repository\EmailsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=EmailsRepository::class)
+ * @UniqueEntity("emailaddress")
  */
 class Emails
 {
@@ -34,6 +36,11 @@ class Emails
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {

@@ -5,6 +5,9 @@
         <title>{% block title %}{% endblock %}</title>
          <link rel="icon" href="{{ asset('assets/images/favicon.ico')}}" type="image/ico" sizes="16x16">
          <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css')}}">
+         <script src="{{ asset('assets/js/jquery-3.5.1.slim.min.js')}}" type="text/javascript"></script>
+            <script src="{{ asset('assets/js/popper.min.js')}}" type="text/javascript"></script>
+            <script src="{{ asset('assets/js/bootstrap.min.js')}}" type="text/javascript"></script>
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
@@ -49,9 +52,6 @@
             {% endfor %}
             {% block body %}{% endblock %}
         </main>
-        <script src="{{ asset('assets/js/jquery-3.5.1.slim.min.js')}}" type="text/javascript"></script>
-        <script src="{{ asset('assets/js/popper.min.js')}}" type="text/javascript"></script>
-        <script src="{{ asset('assets/js/bootstrap.min.js')}}" type="text/javascript"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

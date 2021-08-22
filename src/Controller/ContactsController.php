@@ -7,11 +7,11 @@ use App\Entity\ContactSearch;
 use App\Entity\Emails;
 use App\Form\ContactSearchType;
 use App\Form\ContactsType;
+use App\Form\EmailsType;
 use App\Repository\ContactsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -96,16 +96,28 @@ class ContactsController extends AbstractController
     /**
      * @Route("/contacts/{id}", name="contacts_single", requirements={"id"="\d+"})
      */
-    public function getOneContact(Contacts $contact, Request $request): Response
+    public function getOneContact(Contacts $contact, Request $request,$id): Response
     {
-        // $email = new Emails(); 
-        // $formEmail = $this->createForm(EmailType::class,$email);
-        // $formEmail->handleRequest($request);
+        $mails = new Emails();
+        $formMail = $this->createForm(EmailsType::class,$mails);
+        $formMail->handleRequest($request);
+        $error = false;
+        if($formMail->isSubmitted()){
+            if($formMail->isValid()){
+                $mails->setContact($contact);
+                $this->manager->persist($mails);
+                $this->manager->flush();
+                $this->addFlash('success','Email created successfully');
+            }else{
+                $error = true;
+            }
+        }
 
         return $this->render('contacts/single-contact.html.twig', [
             'controller_name' => 'ContactsController',
-            // 'emailForm' => $formEmail->createView(),
-            'contact' => $contact
+            'emailform' => $formMail->createView(),
+            'contact' => $contact,
+            'error' => $error
         ]);
     }
 
