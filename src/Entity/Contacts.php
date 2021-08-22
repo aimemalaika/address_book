@@ -43,12 +43,12 @@ class Contacts
     private $createdAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="contact", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Emails::class, mappedBy="contact", orphanRemoval=true, cascade={"remove"})
      */
     private $emails;
 
     /**
-     * @ORM\OneToMany(targetEntity=Telephone::class, mappedBy="contact")
+     * @ORM\OneToMany(targetEntity=Telephone::class, mappedBy="contact", orphanRemoval=true , cascade={"remove"})
      */
     private $telephones;
 
