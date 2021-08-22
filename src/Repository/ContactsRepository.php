@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Contacts;
+use App\Entity\ContactSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -21,44 +22,39 @@ class ContactsRepository extends ServiceEntityRepository
         parent::__construct($registry, Contacts::class);
     }
 
-    // /**
-    //  * @return Contacts[] Returns an array of Contacts objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
     /**
      * @return Query Returns an array of Contacts objects
      */
 
     public function findAllMyContacts(): Query
     {
-        return $this->findAllQuery('c')
+        return $this->findAllQuery()
         ->orderBy('c.id', 'DESC')
         ->getQuery();
     }
 
+
     // /**
-    //  * @return Contacts[] Returns an array of Contacts objects
+    //  * @return Query Returns an array of Contacts objects
     //  */
-    // public function findMyContacts() : array
-    // {
-    //     return $this->findAllQuery('c')
-    //         ->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
+
+    public function findAllMyContactsByName(ContactSearch $search): Query
+    {
+        $query = $this->findAllQuery();
+        
+        if($search->getName()){
+            $arrayname = explode(" ", $search->getName());
+            for($i = 0; $i < count($arrayname); $i++){
+               $query->orWhere('c.firstname = :name'.$i)
+                            ->orWhere('c.lastname = :name'.$i)
+                            ->orderBy('c.id', 'DESC')
+                            ->setParameter('name'.$i, $arrayname[$i]);
+            }
+            dump($arrayname);
+        }
+
+        return $query->getQuery();
+    }
 
     /**
      * @return QueryBuilder 
@@ -68,16 +64,4 @@ class ContactsRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c');
     }
-    
-    /*
-    public function findOneBySomeField($value): ?Contacts
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

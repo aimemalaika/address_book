@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Contacts;
+use App\Entity\ContactSearch;
+use App\Form\ContactSearchType;
 use App\Form\ContactsType;
 use App\Repository\ContactsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,16 +28,20 @@ class ContactsController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        // $datas = $this->repository->findAllMyContacts();
+        $search = new ContactSearch();
+        $form = $this->createForm(ContactSearchType::class, $search);
+        $form->handleRequest($request);
+
 
         $datas = $paginator->paginate(
-            $this->repository->findAllMyContacts(),
+            $this->repository->findAllMyContactsByName($search),
             $request->request->getInt('page',1),
             16
         );
         
         return $this->render('contacts/my-contact.html.twig', [
             'controller_name' => 'ContactsController',
+            'searchform' => $form->createView(),
             'contacts' => $datas
         ]);
     }
