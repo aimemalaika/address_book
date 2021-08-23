@@ -2,32 +2,32 @@
 
 - clone the repository
 
-  `git clone https://github.com/aimemalaika/address_book.git`
+    `git clone https://github.com/aimemalaika/address_book.git`
   
 - install dependency 
 
-  `composer install`
+    `composer install`
  
- - configure credential for database in .env file & create database
+- configure credential for database in .env file & create database
 
-  DATABASE_URL="mysql://`db_username`:`db_password`@127.0.0.1:3306/`db_name`?`server_version`"
+    DATABASE_URL="mysql://`db_username`:`db_password`@127.0.0.1:3306/`db_name`?`server_version`"
 
-  `php bin/console doctrine:database:create`
+    `php bin/console doctrine:database:create`
  
- - run migrations
+- run migrations
 
-  `php bin/console doctrine:migrations:migrate`
+    `php bin/console doctrine:migrations:migrate`
  
- - insert datas
+- insert datas
 
-  `php bin/console doctrine:fixtures:load`
+    `php bin/console doctrine:fixtures:load`
   
- - run server
+- run server
 
-  `php bin/console server:run`
+    `php bin/console server:run`
 
 - App Logins
 
-  username = `aimemalaika`
-  password = `Aime1995@`
+    username = `aimemalaika`
+    password = `Aime1995@`
 
